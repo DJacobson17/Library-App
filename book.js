@@ -1,40 +1,36 @@
 let newBook
 
+
 class Book {
-constructor(title, author, pages, read=False) {
-  this.title = title
-  this.author = author
-  this.pages = pages
-  this.read = read
-  const status = read == False ? "not read yet" : "read"
-  }
+  constructor(title, author, pages, read) {
+    this.title = title
+    this.author = author
+    this.pages = pages
+    this.read = read
+    }
 }
+
+
 class Library {
   myLibrary = [];
-  anchor = document.querySelector(#anchor);
+  anchor = document.querySelector("#anchor");
 
-  addBookToLibrary () {
-    const title = prompt("What is the title of the book?")
-    const author = prompt("Who is the author?")
-    const pages = prompt("How long is the book?")
+  addBookToLibrary (book) {
+    // const title = prompt("What is the title of the book?")
+    // const author = prompt("Who is the author?")
+    // const pages = prompt("How long is the book?")
     // read = prompt("Have you read this book? ('Y' or 'N'")
 
-    newBook = new Book(title, author, pages, read)
-    console.log(newBook)
-    myLibrary.push(newBook)
-    return this.title + " has been added to the library"
+    // let newBook = new Book(title, author, pages, read);
+    // console.log(newBook);
+    this.myLibrary.push(book);
+    this.createCard(book);
   }
 
-  const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", 295, "N")
-  const Shogun = new Book("Shogun", "James Clavell", 950, )
-  console.log(theHobbit.info());
-  console.log(Shogun.info());
-  myLibrary.push(theHobbit)
-  myLibrary.push(Shogun)
 
-  function displayLibrary (){
-    myLibrary.forEach(createCard)
-  }
+  // displayLibrary (){
+  //   myLibrary.forEach(createCard)
+  // }
 
   createCard(book) {
     const col = document.createElement("div");
@@ -54,7 +50,7 @@ class Library {
     anchor.appendChild(col);
   }
 
-  buildCardHeader (book) {
+  buildCardHeader(book) {
     const cardHeader = document.createElement("div");
     cardHeader.className = "card-header";
 
@@ -69,7 +65,39 @@ class Library {
     return cardHeader;
   }
 
+  buildCardBody(book)  {
+    const body = document.createElement("div");
+    body.className = "card-body";
 
+    const title = document.createElement("h3");
+    title.innerText = book.title;
+    body.appendChild(title);
 
+    const author = document.createElement("p");
+    author.innerText = book.author;
+    body.appendChild(author);
 
+    return body;
+
+  }
+
+  buildCardFooter(book) {
+    const footer = document.createElement("div");
+    footer.className = "card-footer text-muted";
+    footer.innerText = book.pages + " pagers";
+
+    return footer
+
+  }
 }
+
+const myLibrary = new Library();
+
+  const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", 295, "false");
+  const Shogun = new Book("Shogun", "James Clavell", 950, "true");
+myLibrary.addBookToLibrary(theHobbit);
+myLibrary.addBookToLibrary(Shogun);
+
+
+
+
