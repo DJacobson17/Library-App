@@ -1,4 +1,3 @@
-let newBook
 
 
 class Book {
@@ -12,25 +11,24 @@ class Book {
 
 
 class Library {
-  myLibrary = [];
+  books = [];
   anchor = document.querySelector("#anchor");
 
-  addBookToLibrary (book) {
-    // const title = prompt("What is the title of the book?")
-    // const author = prompt("Who is the author?")
-    // const pages = prompt("How long is the book?")
-    // read = prompt("Have you read this book? ('Y' or 'N'")
-
-    // let newBook = new Book(title, author, pages, read);
-    // console.log(newBook);
-    this.myLibrary.push(book);
-    this.createCard(book);
+  displayAllBooks() {
+    for (const book of this.books) {
+      this.createCard(book);
+    }
+  }
+  
+  resetBookCards() {
+    this.anchor.textContent = '';
+    this.displayAllBooks();
   }
 
-
-  // displayLibrary (){
-  //   myLibrary.forEach(createCard)
-  // }
+  
+  displayLibrary (){
+    myLibrary.forEach(createCard)
+  }
 
   createCard(book) {
     const col = document.createElement("div");
@@ -81,22 +79,78 @@ class Library {
 
   }
 
+  buildReadButton(book) {
+    const readButton = document.createElement("a");
+    readButton.className = "btn btn-dark card-link";
+    readButton.innerText = (book.read === "true") ? "Mark Unread" : "Mark Read";
+  
+    readButton.addEventListener('click', () => {
+      const bookIndex = this.findBookIndex(book.title);
+      const targetBook = this.books.at(bookIndex)
+      targetBook.read = (targetBook.read === "true") ? "false" : "true";
+      this.resetBookCards();
+    })
+  
+    return readButton;
+  }
   buildCardFooter(book) {
     const footer = document.createElement("div");
     footer.className = "card-footer text-muted";
-    footer.innerText = book.pages + " pagers";
+    footer.innerText = book.pages + " pages";
 
     return footer
 
   }
+
+  addBook () {
+    const title = document.getElementById("title").value;
+    const author = document.getElementById("author").value;
+    const pages = document.getElementById("pages").value;
+    const read = (document.getElementById("read").checked) ? "true" : "false";
+
+    let newBook = new Book(title, author, pages, read);
+    console.log(newBook);
+    this.books.push(newBook);
+    this.createCard(newBook);
+  }
 }
+
+let modal = document.querySelector("#bookModal")
+
+function openModal() {
+  modal.style.display = "flex";
+
+}
+
+function closeModal() {
+  modal.style.display = "none";
+}
+
+
 
 const myLibrary = new Library();
 
-  const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", 295, "false");
-  const Shogun = new Book("Shogun", "James Clavell", 950, "true");
-myLibrary.addBookToLibrary(theHobbit);
-myLibrary.addBookToLibrary(Shogun);
+
+const title = document.getElementById("title");
+const author = document.getElementById("author");
+const pages = document.getElementById("pages");
+// const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", 295, "false");
+// const Shogun = new Book("Shogun", "James Clavell", 950, "true");
+// myLibrary.addBook(theHobbit);
+// myLibrary.addBook(Shogun);
+
+const bookForm = document.getElementById("book-form");
+
+bookForm.addEventListener('submit', e => {
+  e.preventDefault();
+  addBookToLibrary();
+  e.target.reset();
+  closeModal();
+});
+
+const addBookToLibrary = () => {
+  myLibrary.addBook();
+};
 
 
 
