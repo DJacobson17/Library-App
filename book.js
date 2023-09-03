@@ -41,7 +41,7 @@ class Library {
     } else {
     card.className = "card text-center border-danger";
     }
-    card.appendChild(this.buildCardHeader(book));
+    // card.appendChild(this.buildCardHeader(book));
     card.appendChild(this.buildCardBody(book));
     card.appendChild(this.buildCardFooter(book));
     col.appendChild(card);
@@ -55,17 +55,16 @@ class Library {
     const headerIcon = document.createElement("i");
     headerIcon.className = (book.read === "true") ? "bi bi-check-lg text-info" : "bi bi-x-lg text-danger";
 
-    const headerText = document.createElement("span");
-    headerText.innerText = " Read";
+    
     cardHeader.appendChild(headerIcon);
-    cardHeader.appendChild(headerText);
+    
 
     return cardHeader;
   }
 
   buildCardBody(book)  {
     const body = document.createElement("div");
-    body.className = "card-body";
+    body.className = "card-body gy-2";
 
     const title = document.createElement("h3");
     title.innerText = book.title;
@@ -74,6 +73,9 @@ class Library {
     const author = document.createElement("p");
     author.innerText = book.author;
     body.appendChild(author);
+    body.appendChild(this.buildReadButton(book));
+    body.appendChild(this.buildDeleteButton(book));
+
 
     return body;
 
@@ -86,13 +88,34 @@ class Library {
   
     readButton.addEventListener('click', () => {
       const bookIndex = this.findBookIndex(book.title);
-      const targetBook = this.books.at(bookIndex)
+      const targetBook = this.books.at(bookIndex);
       targetBook.read = (targetBook.read === "true") ? "false" : "true";
       this.resetBookCards();
     })
   
     return readButton;
   }
+
+  buildDeleteButton(book) {
+    const deleteButton = document.createElement("a");
+    deleteButton.className = "btn btn-danger card-link";
+    deleteButton.innerText = "Delete Book";
+
+    deleteButton.addEventListener('click', () => {
+      this.removeBook(book.title);
+      this.resetBookCards();
+    })
+
+    return deleteButton
+  }
+
+  findBookIndex(bookTitle) {
+    return this.books.findIndex(
+      (book) => book.title === bookTitle
+    );
+  }
+
+
   buildCardFooter(book) {
     const footer = document.createElement("div");
     footer.className = "card-footer text-muted";
@@ -112,6 +135,17 @@ class Library {
     console.log(newBook);
     this.books.push(newBook);
     this.createCard(newBook);
+  }
+
+  removeBook(title) {
+    this.removeFromLibrary(title)
+    document.getElementById(title).remove
+  }
+
+  removeFromLibrary(bookTitle) {
+    this.books.splice(this.books.findIndex(function(i) {
+      return i.title ===bookTitle;
+    }), 1);
   }
 }
 
