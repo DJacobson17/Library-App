@@ -168,10 +168,6 @@ const myLibrary = new Library();
 const title = document.getElementById("title");
 const author = document.getElementById("author");
 const pages = document.getElementById("pages");
-// const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", 295, "false");
-// const Shogun = new Book("Shogun", "James Clavell", 950, "true");
-// myLibrary.addBook(theHobbit);
-// myLibrary.addBook(Shogun);
 
 const bookForm = document.getElementById("book-form");
 
